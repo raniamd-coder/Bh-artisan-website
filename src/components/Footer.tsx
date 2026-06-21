@@ -46,6 +46,10 @@ export default function Footer() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-600">
           <p>© {new Date().getFullYear()} Bandar Hamoud — Plâtrerie &amp; Peinture</p>
           <p>Saint-Priest · Lyon · Rhône</p>
+          <p className="text-gray-700 hover:text-gray-500 transition-colors">
+            Design &amp; développement{" "}
+            <span className="bh-logo italic text-sm text-gray-600">ℛℳ</span>
+          </p>
         </div>
       </div>
     </footer>
