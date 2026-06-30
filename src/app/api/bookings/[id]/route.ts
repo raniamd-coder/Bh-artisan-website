@@ -58,7 +58,7 @@ export async function PATCH(
 
   await resend.emails
     .send({
-      from: "PSS Bâtiment <contact@bandarhamoud.com>",
+      from: "BH Artisan <contact@bandarhamoud.com>",
       to: booking.email,
       subject:
         action === "confirmer"
