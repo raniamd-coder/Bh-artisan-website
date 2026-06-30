@@ -39,6 +39,8 @@ export async function PATCH(
     await prisma.booking.update({ where: { id }, data: { calendarEventId: null } });
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "https://bandarhamoud.com";
+
   // Email au client
   const emailHtml =
     action === "confirmer"
@@ -52,6 +54,10 @@ export async function PATCH(
             <tr style="background:#f9fafb"><td style="padding:8px;color:#666">Type de travaux</td><td style="padding:8px;font-weight:600">${booking.workType}</td></tr>
           </table>
           <p>Nous vous contacterons prochainement pour finaliser les détails.</p>
+          <div style="margin:24px 0;display:flex;gap:12px">
+            <a href="${baseUrl}/booking/${booking.clientToken}?action=modifier" style="background:#2563eb;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px">📅 Modifier ma date</a>
+            <a href="${baseUrl}/booking/${booking.clientToken}?action=annuler" style="background:#dc2626;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px">❌ Annuler mon RDV</a>
+          </div>
           <p style="color:#666;font-size:13px">— L'équipe BH Artisan</p>
         </div>`
       : `

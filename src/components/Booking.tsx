@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent, useRef } from "react";
+import { useState, FormEvent, useRef, useEffect } from "react";
 
 const workTypes = [
   "Plâtrerie",
@@ -14,13 +14,31 @@ export default function Booking() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [unavailableDates, setUnavailableDates] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    fetch("/api/bookings/unavailable-dates")
+      .then((r) => r.json())
+      .then((dates) => setUnavailableDates(dates))
+      .catch(() => {});
+  }, []);
+
+  const isUnavailable = (date: string) => unavailableDates.includes(date);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     const fd = new FormData(e.currentTarget);
+    const selectedDate = fd.get("date") as string;
+
+    if (isUnavailable(selectedDate)) {
+      setError("Cette date est déjà réservée. Veuillez en choisir une autre.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/bookings", {
         method: "POST",
@@ -29,7 +47,7 @@ export default function Booking() {
           name: fd.get("name"),
           email: fd.get("email"),
           phone: fd.get("phone"),
-          date: fd.get("date"),
+          date: selectedDate,
           workType: fd.get("workType"),
           message: fd.get("message"),
         }),
@@ -155,8 +173,18 @@ export default function Booking() {
                     name="date"
                     type="date"
                     title="Date souhaitée"
+                    min={new Date().toISOString().split("T")[0]}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (isUnavailable(val)) {
+                        e.target.setCustomValidity("Cette date est déjà réservée.");
+                      } else {
+                        e.target.setCustomValidity("");
+                      }
+                    }}
                     className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
                   />
+                  <p className="text-xs text-gray-500">Les dates grisées sont déjà réservées.</p>
                 </div>
               </div>
 

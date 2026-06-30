@@ -16,8 +16,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const clientToken = crypto.randomUUID();
+
     const booking = await prisma.booking.create({
-      data: { name, email, phone, date, workType, message: message ?? null },
+      data: { name, email, phone, date, workType, message: message ?? null, clientToken },
     });
 
     // Email notification

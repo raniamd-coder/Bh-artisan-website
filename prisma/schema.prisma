@@ -20,6 +20,7 @@ model Booking {
   message          String?
   status           String   @default("en_attente")
   calendarEventId  String?
+  clientToken      String?  @unique
   createdAt        DateTime @default(now())
 }
 
