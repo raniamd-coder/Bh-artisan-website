@@ -11,15 +11,16 @@ datasource db {
 }
 
 model Booking {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  phone     String
-  date      String
-  workType  String
-  message   String?
-  status    String   @default("en_attente")
-  createdAt DateTime @default(now())
+  id               String   @id @default(cuid())
+  name             String
+  email            String
+  phone            String
+  date             String
+  workType         String
+  message          String?
+  status           String   @default("en_attente")
+  calendarEventId  String?
+  createdAt        DateTime @default(now())
 }
 
 model Message {

@@ -2,29 +2,19 @@ import { google } from "googleapis";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 
-export async function addCalendarEvent({
-  summary,
-  description,
-  date,
-}: {
-  summary: string;
-  description: string;
-  date: string; // format YYYY-MM-DD
-}) {
+async function getCalendarClient() {
   const calendarId = process.env.GOOGLE_CALENDAR_ID;
-  if (!calendarId) return;
+  if (!calendarId) return null;
 
   let credentials: { client_email: string; private_key: string };
 
-  // Vercel : lire depuis variable d'environnement
   if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
     credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
   } else {
-    // Local / Docker : lire depuis fichier
     const keyPath = join(process.cwd(), "google-service-account.json");
     if (!existsSync(keyPath)) {
       console.error("[calendar] Credentials introuvables");
-      return;
+      return null;
     }
     credentials = JSON.parse(readFileSync(keyPath, "utf-8"));
   }
@@ -35,15 +25,41 @@ export async function addCalendarEvent({
     scopes: ["https://www.googleapis.com/auth/calendar"],
   });
 
-  const calendar = google.calendar({ version: "v3", auth });
+  return { calendar: google.calendar({ version: "v3", auth }), calendarId };
+}
 
-  await calendar.events.insert({
-    calendarId,
+export async function addCalendarEvent({
+  summary,
+  description,
+  date,
+}: {
+  summary: string;
+  description: string;
+  date: string;
+}): Promise<string | null> {
+  const client = await getCalendarClient();
+  if (!client) return null;
+
+  const res = await client.calendar.events.insert({
+    calendarId: client.calendarId,
     requestBody: {
       summary,
       description,
-      start: { date }, // all-day event
+      start: { date },
       end: { date },
     },
   });
+
+  return res.data.id ?? null;
 }
+
+export async function deleteCalendarEvent(eventId: string): Promise<void> {
+  const client = await getCalendarClient();
+  if (!client) return;
+
+  await client.calendar.events.delete({
+    calendarId: client.calendarId,
+    eventId,
+  }).catch((err) => console.error("[calendar] delete error", err));
+}
+

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { addCalendarEvent } from "@/lib/calendar";
+import { addCalendarEvent, deleteCalendarEvent } from "@/lib/calendar";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -23,13 +23,20 @@ export async function PATCH(
     data: { status },
   });
 
-  // Ajouter au calendrier seulement si confirmé
+  // Calendrier : créer si confirmé, supprimer si annulé
   if (action === "confirmer") {
-    await addCalendarEvent({
+    const eventId = await addCalendarEvent({
       summary: `RDV — ${booking.name} (${booking.workType})`,
       description: `Téléphone : ${booking.phone}\nEmail : ${booking.email}${booking.message ? `\n\n${booking.message}` : ""}`,
       date: booking.date,
-    }).catch((err) => console.error("[calendar]", err));
+    }).catch((err) => { console.error("[calendar]", err); return null; });
+
+    if (eventId) {
+      await prisma.booking.update({ where: { id }, data: { calendarEventId: eventId } });
+    }
+  } else if (action === "annuler" && booking.calendarEventId) {
+    await deleteCalendarEvent(booking.calendarEventId);
+    await prisma.booking.update({ where: { id }, data: { calendarEventId: null } });
   }
 
   // Email au client
@@ -76,6 +83,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  const booking = await prisma.booking.findUnique({ where: { id } });
+  if (booking?.calendarEventId) {
+    await deleteCalendarEvent(booking.calendarEventId);
+  }
   await prisma.booking.delete({ where: { id } });
   return NextResponse.json({ success: true });
 }
