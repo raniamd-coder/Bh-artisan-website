@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     // Email notification
     await resend.emails.send({
       from: "PSS Bâtiment <contact@bandarhamoud.com>",
-      to: process.env.NOTIFICATION_EMAIL!
+      to: process.env.NOTIFICATION_EMAIL!,
       subject: `Nouvelle réservation — ${name}`,
       html: `
         <h2>Nouvelle demande de rendez-vous</h2>
