@@ -1,204 +1,261 @@
 # Dossier Technique — BH Artisan
 
-**Projet :** Site vitrine & back-office pour un artisan plâtrier-peintre  
-**Client :** Bandar Hamoud  
-**Date de réalisation :** Juin 2026  
-**Auteur :** Bandar Hamoud  
+---
+
+> **Étudiante :** Rania M'Hamdi
+> **Formation :** Développement Web & Web Mobile
+> **Projet :** Site vitrine & back-office pour un artisan plâtrier-peintre
+> **Client :** Bandar Hamoud — Plâtrerie & Peinture
+> **Date de réalisation :** Juin 2026
+
+---
+
+## Liens du projet
+
+| Ressource | URL |
+|-----------|-----|
+| Site en production | https://bh-artisan-website.vercel.app |
+| Interface admin | https://bh-artisan-website.vercel.app/admin |
+| Code source (GitHub) | https://github.com/raniamd-coder/Bh-artisan-website |
 
 ---
 
 ## Table des matières
 
-1. [Contexte et objectifs](#1-contexte-et-objectifs)
-2. [Architecture générale](#2-architecture-générale)
-3. [Technologies utilisées](#3-technologies-utilisées)
-4. [Structure du projet](#4-structure-du-projet)
-5. [Base de données](#5-base-de-données)
-6. [API et routes serveur](#6-api-et-routes-serveur)
-7. [Authentification et sécurité](#7-authentification-et-sécurité)
-8. [Intégrations externes](#8-intégrations-externes)
-9. [Déploiement et hébergement](#9-déploiement-et-hébergement)
-10. [Variables d'environnement](#10-variables-denvironnement)
+1. [Présentation du projet](#1-présentation-du-projet)
+2. [Cahier des charges et livrables](#2-cahier-des-charges-et-livrables)
+3. [Architecture générale](#3-architecture-générale)
+4. [Technologies utilisées](#4-technologies-utilisées)
+5. [Structure du projet](#5-structure-du-projet)
+6. [Base de données](#6-base-de-données)
+7. [API et routes serveur](#7-api-et-routes-serveur)
+8. [Authentification et sécurité](#8-authentification-et-sécurité)
+9. [Intégrations externes](#9-intégrations-externes)
+10. [Tests](#10-tests)
+11. [Déploiement et hébergement](#11-déploiement-et-hébergement)
+12. [Variables d'environnement](#12-variables-denvironnement)
+13. [Bilan et retour d'expérience](#13-bilan-et-retour-dexpérience)
 
 ---
 
-## 1. Contexte et objectifs
+## 1. Présentation du projet
 
-### Contexte
+### Contexte client
 
-Bandar Hamoud est un artisan plâtrier-peintre indépendant qui intervenait uniquement par bouche-à-oreille. L'objectif de ce projet était de lui créer une présence en ligne professionnelle avec un système de prise de rendez-vous en ligne, sans passer par un prestataire tiers (type Calendly ou Doctolib).
+Bandar Hamoud est un artisan plâtrier-peintre indépendant basé à Saint-Priest (Rhône),
+intervenant sur Lyon et sa métropole. Son activité reposait uniquement sur le bouche-à-oreille,
+sans aucune présence numérique.
 
-### Objectifs fonctionnels
+L'objectif de ce projet était de lui créer une identité en ligne professionnelle,
+accompagnée d'un système autonome de gestion des demandes clients — sans abonnement
+à un outil tiers (Calendly, Doctolib, etc.).
 
-- Présenter les services de l'artisan (plâtrerie, peinture, rénovation)
-- Permettre aux clients de prendre rendez-vous en ligne
-- Permettre aux clients de laisser un message de contact
-- Donner à l'artisan un espace d'administration pour gérer les demandes
-- Envoyer des notifications email automatiques (client et artisan)
-- Synchroniser les rendez-vous confirmés avec Google Calendar
+### Périmètre fonctionnel
 
-### Objectifs techniques
+**Site vitrine (public)**
 
-- Application web full-stack moderne
-- Interface responsive (mobile, tablette, desktop)
-- Base de données cloud persistante
-- Système d'authentification sécurisé
-- Déployable sur Vercel ou Docker
+- Présentation de l'artisan et de ses services (plâtrerie, peinture, rénovation)
+- Galerie photo des réalisations
+- Formulaire de prise de rendez-vous en ligne
+- Formulaire de contact
+- Zone d'intervention géographique
+
+**Back-office (privé, réservé à l'artisan)**
+
+- Tableau de bord avec indicateurs (RDV en attente, confirmés, annulés, messages)
+- Gestion des réservations : confirmer, annuler, supprimer
+- Gestion des messages de contact : consulter, supprimer
+- Synchronisation automatique avec Google Calendar à la confirmation
+- Notifications email automatiques (artisan et client)
 
 ---
 
-## 2. Architecture générale
+## 2. Cahier des charges et livrables
 
-L'application suit une architecture **full-stack monolithique** basée sur Next.js avec le pattern App Router. Le frontend et le backend cohabitent dans le même projet.
+### Livrables réalisés
+
+| Livrable | Description | Accès |
+|----------|-------------|-------|
+| Site en production | Application Next.js déployée sur Vercel | https://bh-artisan-website.vercel.app |
+| Code source | Dépôt Git complet, commits historisés | https://github.com/raniamd-coder/Bh-artisan-website |
+| Spécifications | Spécifications fonctionnelles et techniques du back-office | `SPECIFICATIONS.md` |
+| Plan de recettage | Scénarios de tests manuels avec résultats | `RECETTAGE.md` |
+| Tests automatisés | Tests unitaires Jest + tests E2E Playwright | `TEST.md` |
+| Dossier technique | Ce document | `DOSSIER_TECHNIQUE.md` |
+
+### Fonctionnalités livrées
+
+| Fonctionnalité | Statut |
+|----------------|--------|
+| Site vitrine responsive (mobile / tablette / desktop) | OK |
+| Galerie photos scrollable | OK |
+| Formulaire de réservation + sauvegarde BDD | OK |
+| Formulaire de contact + sauvegarde BDD | OK |
+| Emails automatiques à l'artisan (nouvelle résa, nouveau message) | OK |
+| Emails automatiques au client (confirmation / annulation) | OK |
+| Interface admin protégée par authentification JWT | OK |
+| Dashboard avec statistiques en temps réel | OK |
+| Actions sur les réservations (confirmer / annuler / supprimer) | OK |
+| Actions sur les messages (supprimer) | OK |
+| Synchronisation Google Calendar à la confirmation | OK |
+| Déploiement Vercel avec CI/CD automatique | OK |
+| Tests unitaires Jest — 10 tests, 3 suites | OK |
+| Tests End-to-End Playwright — 4 fichiers | OK |
+
+---
+
+## 3. Architecture générale
+
+L'application suit une architecture **full-stack monolithique** basée sur Next.js App Router.
+Le frontend et le backend cohabitent dans le même dépôt, déployés ensemble sur Vercel.
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                  Navigateur client                  │
-│         (site vitrine + formulaires)                │
-└──────────────────────┬──────────────────────────────┘
-                       │ HTTP / HTTPS
-┌──────────────────────▼──────────────────────────────┐
-│              Next.js App (Vercel / Docker)          │
-│                                                     │
-│  ┌─────────────┐    ┌──────────────────────────┐   │
-│  │   Frontend  │    │     API Routes (backend) │   │
-│  │  (React)    │    │  /api/bookings           │   │
-│  │             │    │  /api/contact            │   │
-│  │  site vitrine    │  /api/admin/login        │   │
-│  │  + dashboard│    │  /api/bookings/[id]      │   │
-│  └─────────────┘    └──────────┬───────────────┘   │
-└─────────────────────────────────┼───────────────────┘
-                                  │
-          ┌───────────────────────┼───────────────────┐
-          │                       │                   │
-┌─────────▼──────┐  ┌────────────▼──────┐  ┌────────▼────────┐
-│  Neon (cloud)  │  │  Resend (emails)  │  │ Google Calendar │
-│  PostgreSQL    │  │                   │  │ API             │
-└────────────────┘  └───────────────────┘  └─────────────────┘
+Navigateur client
+       |
+       | HTTP/HTTPS
+       v
+Next.js App (Vercel)
+  +-----------+     +---------------------------+
+  | Frontend  |     | API Routes (backend)      |
+  | React     |     | /api/bookings             |
+  | site      |     | /api/contact              |
+  | vitrine   |     | /api/admin/login          |
+  | dashboard |     | /api/bookings/[id]        |
+  +-----------+     +---------------------------+
+                              |
+           +------------------+------------------+
+           |                  |                  |
+    Neon PostgreSQL      Resend (email)    Google Calendar API
+    (cloud EU)
 ```
+
+**Choix de cette architecture :**
+
+- Un seul dépôt, un seul déploiement : simplicité de maintenance
+- Next.js App Router co-localise l'UI et les endpoints
+- La base de données est découplée (Neon cloud) : si l'app est redéployée, les données sont préservées
 
 ---
 
-## 3. Technologies utilisées
+## 4. Technologies utilisées
 
 ### Frontend
 
 | Technologie | Version | Rôle |
 |---|---|---|
-| **Next.js** | 16.2.7 | Framework React, App Router, SSR |
-| **React** | 19 | Bibliothèque UI |
-| **TypeScript** | 5 | Typage statique |
-| **Tailwind CSS** | v4 | Framework CSS utilitaire |
+| Next.js | 16.2.7 | Framework React, App Router, SSR |
+| React | 19 | Bibliothèque UI |
+| TypeScript | 5 | Typage statique |
+| Tailwind CSS | v4 | Framework CSS utilitaire |
 
-> ⚠️ **Tailwind v4** : syntaxe différente de v3. `bg-gradient-to-t` devient `bg-linear-to-t`, les classes `bg-white/[0.02]` s'écrivent `bg-white/2`.
+Note : Tailwind v4 a une syntaxe différente de v3. `bg-gradient-to-t` devient `bg-linear-to-t`.
+Les inline styles sont interdits (règle ESLint stricte).
 
 ### Backend
 
 | Technologie | Version | Rôle |
 |---|---|---|
-| **Next.js API Routes** | — | Endpoints REST serveur |
-| **Prisma** | 7.8.0 | ORM base de données |
-| **@prisma/adapter-pg** | — | Adaptateur PostgreSQL pour Prisma 7 |
-| **jose** | — | Création et vérification des JWT |
+| Next.js API Routes | — | Endpoints REST serveur |
+| Prisma | 7.8.0 | ORM base de données |
+| @prisma/adapter-pg | — | Adaptateur PostgreSQL pour Prisma 7 |
+| jose | — | Création et vérification des JWT |
 
-> ⚠️ **Prisma 7** : breaking change — le champ `url` dans `datasource db` n'existe plus dans `schema.prisma`. Il doit être déclaré dans `prisma.config.ts`.
-
-### Base de données
-
-| Technologie | Rôle |
-|---|---|
-| **Neon** | PostgreSQL serverless cloud (EU Frankfurt) |
+Note : Prisma 7 breaking change — le champ `url` dans `datasource db` n'est plus dans
+`schema.prisma` mais dans `prisma.config.ts`.
 
 ### Services externes
 
 | Service | Rôle |
 |---|---|
-| **Resend** | Envoi d'emails transactionnels (gratuit jusqu'à 100 emails/jour) |
-| **Google Calendar API** | Création d'événements lors de la confirmation d'un RDV |
+| Neon | PostgreSQL serverless cloud (EU Frankfurt) |
+| Resend | Emails transactionnels (gratuit jusqu'à 100/jour) |
+| Google Calendar API | Création d'événements à la confirmation RDV |
+
+### Tests
+
+| Outil | Rôle |
+|---|---|
+| Jest + ts-jest | Tests unitaires (API routes) |
+| @testing-library/react | Tests de composants React |
+| Playwright | Tests End-to-End (parcours utilisateur complets) |
+
+### Déploiement
+
+| Outil | Rôle |
+|---|---|
+| Vercel | Hébergement + CI/CD automatique via GitHub |
+| GitHub | Versioning, déclencheur de déploiement |
 
 ---
 
-## 4. Structure du projet
+## 5. Structure du projet
 
 ```
 d:\Nouveau dossier\
-│
-├── src/
-│   ├── app/                          # App Router Next.js
-│   │   ├── layout.tsx                # Layout racine (font Inter)
-│   │   ├── page.tsx                  # Page principale (site vitrine)
-│   │   ├── globals.css               # Styles globaux + animations
-│   │   │
-│   │   ├── admin/                    # Back-office
-│   │   │   ├── page.tsx              # Dashboard (Server Component)
-│   │   │   ├── AdminDashboard.tsx    # UI du dashboard (Client Component)
-│   │   │   ├── BookingActions.tsx    # Boutons Confirmer/Annuler/Supprimer
-│   │   │   └── login/
-│   │   │       └── page.tsx          # Page de connexion admin
-│   │   │
-│   │   └── api/                      # Routes API
-│   │       ├── bookings/
-│   │       │   ├── route.ts          # GET + POST /api/bookings
-│   │       │   └── [id]/
-│   │       │       └── route.ts      # PATCH + DELETE /api/bookings/[id]
-│   │       ├── contact/
-│   │       │   └── route.ts          # POST /api/contact
-│   │       ├── messages/
-│   │       │   └── [id]/
-│   │       │       └── route.ts      # DELETE /api/messages/[id]
-│   │       └── admin/
-│   │           ├── login/
-│   │           │   └── route.ts      # POST /api/admin/login
-│   │           └── logout/
-│   │               └── route.ts      # POST /api/admin/logout
-│   │
-│   ├── components/                   # Composants React
-│   │   ├── Navbar.tsx                # Navigation fixe avec hamburger mobile
-│   │   ├── Hero.tsx                  # Section hero avec blobs animés
-│   │   ├── About.tsx                 # Présentation artisan
-│   │   ├── Services.tsx              # 3 services en layout alterné
-│   │   ├── Gallery.tsx               # Galerie carousel horizontal
-│   │   ├── Booking.tsx               # Formulaire de réservation
-│   │   ├── Contact.tsx               # Formulaire de contact
-│   │   ├── ServiceArea.tsx           # Zone d'intervention + carte
-│   │   ├── Footer.tsx                # Pied de page
-│   │   └── FadeIn.tsx                # Animation scroll-reveal
-│   │
-│   ├── lib/
-│   │   ├── prisma.ts                 # Client Prisma singleton
-│   │   └── calendar.ts               # Intégration Google Calendar
-│   │
-│   ├── middleware.ts                 # Protection routes /admin (JWT)
-│   └── generated/
-│       └── prisma/                   # Client Prisma généré (npx prisma generate)
-│
-├── prisma/
-│   └── schema.prisma                 # Schéma de la base de données
-│
-├── prisma.config.ts                  # Config Prisma 7 (DATABASE_URL)
-├── public/
-│   └── gallery/                      # 13 photos WhatsApp de réalisations
-│
-├── google-service-account.json       # Credentials Google (hors Git)
-├── .env.local                        # Variables d'environnement (hors Git)
-├── .gitignore
-├── next.config.ts
-├── tsconfig.json
-├── package.json
-├── README.md
-├── SPECIFICATIONS.md                 # Spécifications back-office
-└── RECETTAGE.md                      # Plan de tests
+|
++-- src/
+|   +-- app/
+|   |   +-- layout.tsx                # Layout racine
+|   |   +-- page.tsx                  # Page principale (site vitrine)
+|   |   +-- globals.css               # Styles globaux + animations
+|   |   +-- admin/
+|   |   |   +-- page.tsx              # Dashboard (Server Component)
+|   |   |   +-- AdminDashboard.tsx    # UI du dashboard (Client Component)
+|   |   |   +-- BookingActions.tsx    # Boutons Confirmer/Annuler/Supprimer
+|   |   |   +-- login/page.tsx        # Page de connexion admin
+|   |   +-- api/
+|   |       +-- bookings/route.ts         # GET + POST
+|   |       +-- bookings/[id]/route.ts    # PATCH + DELETE
+|   |       +-- contact/route.ts          # POST + GET
+|   |       +-- messages/[id]/route.ts    # DELETE
+|   |       +-- admin/login/route.ts      # POST /login
+|   |       +-- admin/logout/route.ts     # POST /logout
+|   |
+|   +-- components/
+|   |   +-- Navbar.tsx, Hero.tsx, About.tsx, Services.tsx
+|   |   +-- Gallery.tsx, Booking.tsx, Contact.tsx
+|   |   +-- ServiceArea.tsx, Footer.tsx
+|   |
+|   +-- lib/
+|   |   +-- prisma.ts                 # Client Prisma singleton
+|   |   +-- calendar.ts               # Intégration Google Calendar
+|   |
+|   +-- middleware.ts                 # Protection routes /admin (JWT)
+|
++-- prisma/
+|   +-- schema.prisma                 # Schéma de la base de données
++-- prisma.config.ts                  # Config Prisma 7 (DATABASE_URL)
+|
++-- __tests__/api/
+|   +-- bookings.test.ts
+|   +-- contact.test.ts
+|   +-- admin-login.test.ts
+|
++-- e2e/
+|   +-- home.spec.ts
+|   +-- booking.spec.ts
+|   +-- contact.spec.ts
+|   +-- admin.spec.ts
+|
++-- public/gallery/                   # 13 photos de réalisations
++-- jest.config.ts
++-- playwright.config.ts
++-- .env.local                        # Variables d'environnement (non versionné)
++-- google-service-account.json       # Credentials Google (non versionné)
++-- SPECIFICATIONS.md
++-- RECETTAGE.md
++-- TEST.md
++-- DOSSIER_TECHNIQUE.md
 ```
 
 ---
 
-## 5. Base de données
+## 6. Base de données
 
 ### Hébergement
 
-Base de données **PostgreSQL** hébergée sur **Neon** (cloud serverless). Région : EU Frankfurt. Connexion via SSL (`sslmode=require`).
-
-Avantage : entièrement découplée du code. Si l'application est redéployée ou dockerisée, les données sont conservées.
+Base de données PostgreSQL hébergée sur Neon (cloud serverless). Région : EU Frankfurt.
+Connexion via SSL (`sslmode=require`).
 
 ### Schéma
 
@@ -224,136 +281,198 @@ model Message {
 }
 ```
 
-### Gestion du schéma
+Le champ `status` peut prendre trois valeurs : `en_attente`, `confirme`, `annule`.
+
+### Commandes
 
 ```bash
-# Appliquer les changements de schéma sur la base
+# Appliquer le schéma sur la base
 npx prisma db push
 
-# Regénérer le client TypeScript Prisma
+# Régénérer le client TypeScript
 npx prisma generate
-```
 
-> ⚠️ Les deux commandes sont indépendantes. `db push` met à jour la base, `generate` met à jour le code. Il faut toujours exécuter les deux après modification du schéma.
+# Explorer les données en local
+npx prisma studio
+```
 
 ---
 
-## 6. API et routes serveur
+## 7. API et routes serveur
 
 ### Réservations
 
-**`POST /api/bookings`** — Créer une réservation  
-- Valide les champs obligatoires (name, email, phone, date, workType)  
-- Sauvegarde en base (status: `en_attente`)  
-- Envoie un email de notification à l'artisan via Resend  
-
-**`GET /api/bookings`** — Lister toutes les réservations  
-- Retourne la liste triée par date de création décroissante  
-
-**`PATCH /api/bookings/[id]`** — Confirmer ou annuler  
-- Body: `{ action: "confirmer" | "annuler" }`  
-- Met à jour le statut en base  
-- Si `confirmer` → crée un événement Google Calendar  
-- Envoie un email au client (confirmation ou annulation)  
-
-**`DELETE /api/bookings/[id]`** — Supprimer une réservation  
-- Suppression définitive en base  
+| Méthode | Route | Description |
+|---------|-------|-------------|
+| POST | /api/bookings | Créer une réservation + email artisan |
+| GET | /api/bookings | Lister toutes les réservations |
+| PATCH | /api/bookings/[id] | Confirmer ou annuler + email client + Google Calendar |
+| DELETE | /api/bookings/[id] | Supprimer définitivement |
 
 ### Messages de contact
 
-**`POST /api/contact`** — Soumettre un message  
-- Sauvegarde en base  
-- Envoie un email de notification à l'artisan  
-
-**`DELETE /api/messages/[id]`** — Supprimer un message  
+| Méthode | Route | Description |
+|---------|-------|-------------|
+| POST | /api/contact | Enregistrer un message + email artisan |
+| GET | /api/contact | Lister tous les messages |
+| DELETE | /api/messages/[id] | Supprimer définitivement |
 
 ### Authentification
 
-**`POST /api/admin/login`** — Connexion admin  
-- Compare le mot de passe à `process.env.ADMIN_PASSWORD`  
-- Si correct : signe un JWT avec `jose` → posé en cookie `admin_token` (httpOnly)  
-- Durée : 7 jours  
-
-**`POST /api/admin/logout`** — Déconnexion  
-- Écrase le cookie avec une date d'expiration passée  
+| Méthode | Route | Description |
+|---------|-------|-------------|
+| POST | /api/admin/login | Vérifier le mot de passe, poser le cookie JWT |
+| POST | /api/admin/logout | Invalider le cookie |
 
 ---
 
-## 7. Authentification et sécurité
+## 8. Authentification et sécurité
 
-### Middleware de protection
-
-Le fichier `src/middleware.ts` intercepte toutes les requêtes vers `/admin/*`. Il vérifie la présence et la validité du cookie `admin_token` via `jwtVerify` (bibliothèque `jose`). Si le token est absent ou expiré, l'utilisateur est redirigé vers `/admin/login`. La route `/admin/login` elle-même est exclue du middleware.
+### Flux d'authentification
 
 ```
-Requête vers /admin/xxx
-    → Middleware vérifie admin_token
-    → Valide → Accès accordé
-    → Invalide / Absent → Redirect /admin/login
+Accès à /admin/*
+  -> Middleware (src/middleware.ts)
+  -> Vérifie le cookie admin_token (jwtVerify)
+  -> Valide  -> accès accordé
+  -> Invalide / absent -> redirect /admin/login
+
+Page /admin/login
+  -> POST /api/admin/login avec { password }
+  -> Mot de passe correct -> JWT signé HS256 -> cookie admin_token (httpOnly)
+  -> Mot de passe incorrect -> 401 + message d'erreur
 ```
 
-### Choix techniques sécurité
+### Mesures de sécurité
 
-| Choix | Justification |
-|---|---|
-| Cookie `httpOnly` | Inaccessible depuis JavaScript (XSS) |
-| Cookie `SameSite=Lax` | Protection contre les attaques CSRF |
-| Cookie `secure=true` en prod | Transmission HTTPS uniquement |
-| JWT signé (HS256) | Token infalsifiable sans la clé secrète |
-| Clé = `ADMIN_PASSWORD` | Réutilisation de la variable existante |
-| Credentials Google hors Git | Évite la fuite de clé privée |
-| `.env.local` hors Git | Variables sensibles non versionnées |
+| Mesure | Justification |
+|--------|--------------|
+| Cookie httpOnly | Inaccessible depuis JavaScript (protection XSS) |
+| Cookie SameSite=Lax | Protection CSRF |
+| Cookie secure=true en production | HTTPS uniquement |
+| JWT signé HS256 | Infalsifiable sans la clé secrète |
+| Variables d'environnement hors Git | Aucun secret exposé dans le code source |
+| Fichier service account hors Git | Clé privée Google non versionnée |
 
 ---
 
-## 8. Intégrations externes
+## 9. Intégrations externes
 
-### 8.1 Resend (emails)
+### Resend (emails transactionnels)
 
-Resend est utilisé pour les emails transactionnels. La bibliothèque officielle `resend` est installée via npm. Les emails sont envoyés depuis `onboarding@resend.dev` (domaine de test gratuit).
+Resend est utilisé pour l'ensemble des notifications email via la bibliothèque npm officielle.
+Les emails sont envoyés depuis `onboarding@resend.dev`.
 
-**Emails envoyés :**
-- À l'artisan : nouvelle réservation, nouveau message de contact
-- Au client : confirmation ou annulation de son rendez-vous
+Emails envoyés :
 
-### 8.2 Google Calendar API
+- Artisan <- nouvelle réservation
+- Artisan <- nouveau message de contact
+- Client <- confirmation de son rendez-vous
+- Client <- annulation de son rendez-vous
 
-L'intégration utilise un **service account** Google (accès serveur-à-serveur, sans authentification OAuth utilisateur). Lorsqu'un admin confirme un RDV, un événement "toute la journée" est automatiquement créé dans le calendrier de l'artisan.
+### Google Calendar API
 
-**Configuration :**
-1. Création d'un projet sur Google Cloud Console
-2. Activation de l'API Google Calendar
-3. Création d'un service account `bh-calendar@bandarhamoud.iam.gserviceaccount.com`
-4. Téléchargement de la clé JSON privée
-5. Partage du calendrier Google avec l'email du service account (rôle : modifier les événements)
+L'intégration utilise un compte de service (service account) Google,
+permettant un accès serveur-à-serveur sans OAuth côté utilisateur.
 
-Le fichier JSON est lu directement depuis le disque (`google-service-account.json`) pour éviter les problèmes d'échappement des caractères `\n` dans les variables d'environnement.
+Flux :
+1. L'admin confirme un RDV dans le dashboard
+2. PATCH /api/bookings/[id] appelle src/lib/calendar.ts
+3. Un événement "toute la journée" est créé dans le calendrier de l'artisan
+
+Configuration côté Google Cloud :
+1. Projet `bandarhamoud` créé sur Google Cloud Console
+2. API Google Calendar activée
+3. Service account `bh-calendar@bandarhamoud.iam.gserviceaccount.com` créé
+4. Clé JSON privée stockée localement (hors Git)
+5. Calendrier Google partagé avec le service account (rôle : modifier les événements)
+
+Sur Vercel : le fichier JSON est transmis via la variable `GOOGLE_SERVICE_ACCOUNT_JSON`
+(contenu JSON stringifié).
 
 ---
 
-## 9. Déploiement et hébergement
+## 10. Tests
 
-### Option 1 — Vercel (recommandé)
+La stratégie de test couvre deux niveaux complémentaires.
+Documentation complète : `TEST.md`
 
-Vercel est la plateforme officielle de Next.js. Le déploiement se fait en connectant le dépôt Git.
+### Tests unitaires — Jest
 
-**Variables à configurer dans Vercel :**
+Configuration : `jest.config.ts`
+
+```bash
+npm test                   # Lancer tous les tests
+npm run test:watch         # Mode watch
+npm run test:coverage      # Avec couverture de code
 ```
-DATABASE_URL
-RESEND_API_KEY
-NOTIFICATION_EMAIL
-ADMIN_PASSWORD
-GOOGLE_CALENDAR_ID
-GOOGLE_SERVICE_ACCOUNT_JSON   ← contenu JSON du fichier service account
+
+Résultats :
+
+```
+Test Suites: 3 passed, 3 total
+Tests:       10 passed, 10 total
 ```
 
-Pour Vercel, le fichier `google-service-account.json` ne peut pas être uploadé. Il faut adapter `src/lib/calendar.ts` pour lire depuis une variable d'environnement `GOOGLE_SERVICE_ACCOUNT_JSON` (JSON stringifié).
+| Fichier | Cas testés |
+|---------|-----------|
+| __tests__/api/bookings.test.ts | POST 400 (champs manquants), POST 200 (création), POST 500 (DB error), GET liste |
+| __tests__/api/contact.test.ts | POST 400, POST 200, POST 500, GET liste |
+| __tests__/api/admin-login.test.ts | POST 401 (mauvais mdp), POST 200 + cookie JWT |
 
-### Option 2 — Docker
+Les dépendances externes (Prisma, Resend, jose) sont intégralement mockées.
+Aucune connexion réseau requise pour les tests unitaires.
 
-L'application Next.js peut être containerisée. La base de données reste sur Neon (cloud), seul le serveur applicatif est dockerisé.
+### Tests End-to-End — Playwright
 
-**`Dockerfile` :**
+Configuration : `playwright.config.ts`
+URL cible : https://bh-artisan-website.vercel.app
+
+```bash
+npm run test:e2e           # Tous les tests (Chromium)
+npm run test:e2e:ui        # Interface graphique Playwright
+BASE_URL=http://localhost:3000 npm run test:e2e   # En local
+```
+
+| Fichier | Scénarios |
+|---------|-----------|
+| e2e/home.spec.ts | Chargement page, titre, menu, navigation par ancres |
+| e2e/booking.spec.ts | Affichage formulaire, validation HTML5, soumission réussie |
+| e2e/contact.spec.ts | Affichage formulaire, soumission réussie |
+| e2e/admin.spec.ts | Redirection non authentifié, affichage login, erreur mauvais mdp |
+
+---
+
+## 11. Déploiement et hébergement
+
+### Vercel (production)
+
+Le projet est connecté au dépôt GitHub.
+Chaque `git push` sur la branche `main` déclenche automatiquement un build et déploiement (CI/CD).
+
+Variables d'environnement configurées sur Vercel :
+
+| Variable | Usage |
+|----------|-------|
+| DATABASE_URL | Connexion Neon PostgreSQL |
+| RESEND_API_KEY | Clé API Resend |
+| NOTIFICATION_EMAIL | Email de notification artisan |
+| ADMIN_PASSWORD | Mot de passe admin |
+| GOOGLE_CALENDAR_ID | ID du calendrier Google |
+| GOOGLE_SERVICE_ACCOUNT_JSON | Contenu JSON du service account Google |
+
+Points de vigilance résolus lors du déploiement :
+
+| Problème | Solution |
+|----------|----------|
+| `prisma generate` non exécuté à la build | Ajout dans package.json : `"build": "prisma generate && next build"` et `"postinstall": "prisma generate"` |
+| Page /admin requête DB au build | Ajout de `export const dynamic = "force-dynamic"` |
+| Clé privée Google mal parsée | Lecture du JSON complet via GOOGLE_SERVICE_ACCOUNT_JSON |
+
+### Docker (alternative)
+
+L'application est dockerisable pour un hébergement self-hosted.
+
 ```dockerfile
 FROM node:20-alpine
 WORKDIR /app
@@ -366,29 +485,11 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
-**`docker-compose.yml` :**
-```yaml
-version: '3.8'
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-      RESEND_API_KEY: ${RESEND_API_KEY}
-      NOTIFICATION_EMAIL: ${NOTIFICATION_EMAIL}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
-      GOOGLE_CALENDAR_ID: ${GOOGLE_CALENDAR_ID}
-    volumes:
-      - ./google-service-account.json:/app/google-service-account.json:ro
-```
-
 ---
 
-## 10. Variables d'environnement
+## 12. Variables d'environnement
 
-Fichier `.env.local` à créer à la racine (non versionné) :
+Fichier `.env.local` à la racine (non versionné) :
 
 ```env
 # Base de données Neon
@@ -405,41 +506,52 @@ ADMIN_PASSWORD="MotDePasseSecret"
 GOOGLE_CALENDAR_ID="email-artisan@gmail.com"
 ```
 
-Fichier `google-service-account.json` à placer à la racine (non versionné) :
-```json
-{
-  "type": "service_account",
-  "project_id": "...",
-  "private_key_id": "...",
-  "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
-  "client_email": "xxx@yyy.iam.gserviceaccount.com",
-  ...
-}
-```
+---
+
+## 13. Bilan et retour d'expérience
+
+### Ce qui a bien fonctionné
+
+- **Next.js App Router** : la cohabitation frontend/backend dans un seul projet est un gain
+  de productivité réel. Plus besoin de gérer deux serveurs distincts.
+
+- **Prisma + Neon** : l'ORM simplifie les requêtes et la gestion du schéma.
+  Neon offre un PostgreSQL cloud gratuit et fiable sans configuration serveur.
+
+- **Vercel** : le déploiement continu via GitHub est transparent.
+  Chaque push déclenche automatiquement un build, ce qui facilite les corrections rapides.
+
+- **Resend** : API email très simple à intégrer, bien documentée,
+  le tier gratuit couvre largement les besoins d'un artisan indépendant.
+
+### Difficultés rencontrées et solutions
+
+| Difficulté | Cause | Solution apportée |
+|-----------|-------|-------------------|
+| Build Vercel échoue | `prisma generate` non exécuté | Script `postinstall` + ajout dans `build` |
+| Page admin plante au build | Requête DB pendant SSR statique | `export const dynamic = "force-dynamic"` |
+| Clé privée Google illisible | `\n` mal interprétés en variable d'env | Lecture du JSON complet via GOOGLE_SERVICE_ACCOUNT_JSON |
+| Tests Jest échouent sur jose | Librairie ESM non supportée par Jest | Mock complet de jose dans les tests admin |
+| Tailwind v4 vs v3 | Classes renommées | Consultation documentation v4, adaptation |
+| Prisma 7 breaking change | `url` retiré de schema.prisma | Migration vers prisma.config.ts |
+
+### Compétences mobilisées
+
+- Développement full-stack avec Next.js (App Router, Server Components, API Routes)
+- Conception et gestion d'une base de données relationnelle (PostgreSQL + Prisma)
+- Authentification JWT stateless (jose, cookies httpOnly)
+- Intégration d'APIs tierces (Resend, Google Calendar)
+- Déploiement et CI/CD (Vercel, GitHub)
+- Tests automatisés unitaires et E2E (Jest, Playwright)
+- Sécurité OWASP : XSS, CSRF, injection SQL (via ORM), secrets hors versioning
+
+### Perspectives d'évolution
+
+- Rappel email automatique 24h avant le rendez-vous
+- Tableau de bord avec graphiques (évolution des réservations)
+- Gestion multi-artisans avec rôles
+- Internationalisation (français / arabe)
 
 ---
 
-## Commandes utiles
-
-```bash
-# Installer les dépendances
-npm install
-
-# Lancer en développement
-npm run dev
-
-# Appliquer le schéma sur la base
-npx prisma db push
-
-# Regénérer le client Prisma
-npx prisma generate
-
-# Build de production
-npm run build
-
-# Lancer en production
-npm start
-
-# Vider le cache Next.js (si problème de hot reload)
-Remove-Item -Recurse -Force .next
-```
+*Dossier rédigé par Rania M'Hamdi — Juin 2026*
