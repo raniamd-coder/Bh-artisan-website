@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     // Email notification
     await resend.emails.send({
-      from: "BH Artisan <onboarding@resend.dev>",
+      from: "PSS Bâtiment <contact@bandarhamoud.com>",
       to: process.env.NOTIFICATION_EMAIL!,
       subject: `Nouveau message — ${name}`,
       html: `
