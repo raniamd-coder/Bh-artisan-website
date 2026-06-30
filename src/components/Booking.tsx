@@ -91,7 +91,7 @@ export default function Booking() {
             {/* Left panel */}
             <div className="md:col-span-2 bg-blue-600 p-10 flex flex-col justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-white mb-2">PSS Bâtiment</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">BH ARTISAN</h3>
                 <p className="text-blue-100 text-sm leading-relaxed mb-10">
                   Artisan qualifié disponible partout en France. Devis gratuit, réponse rapide.
                 </p>
@@ -110,7 +110,7 @@ export default function Booking() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </div>
-                    <span className="text-sm text-white font-medium">contact@bh-platrier.fr</span>
+                    <span className="text-sm text-white font-medium">contact@bandarhamoud.com</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center shrink-0">
